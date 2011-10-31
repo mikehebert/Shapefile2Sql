@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shapefile2Sql", "Shapefile2Sql\Shapefile2Sql.csproj", "{0F345BC7-B2AD-4AAF-981A-67F3A3C58190}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{F96292B8-6E78-4C52-92ED-DA0EB4A8FACF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DotSpatial_1.0.746", "DotSpatial_1.0.746", "{43DCCC47-9874-4F11-A45B-52ADC8995413}"
+	ProjectSection(SolutionItems) = preProject
+		..\lib\DotSpatial_1.0.746\DotSpatial.Data.dll = ..\lib\DotSpatial_1.0.746\DotSpatial.Data.dll
+		..\lib\DotSpatial_1.0.746\DotSpatial.Projections.dll = ..\lib\DotSpatial_1.0.746\DotSpatial.Projections.dll
+		..\lib\DotSpatial_1.0.746\DotSpatial.Serialization.dll = ..\lib\DotSpatial_1.0.746\DotSpatial.Serialization.dll
+		..\lib\DotSpatial_1.0.746\DotSpatial.Topology.dll = ..\lib\DotSpatial_1.0.746\DotSpatial.Topology.dll
+		..\lib\DotSpatial_1.0.746\README = ..\lib\DotSpatial_1.0.746\README
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data Connection Dialog", "Data Connection Dialog", "{8BFEF852-7BA9-4FBB-8249-0806E043F5C6}"
+	ProjectSection(SolutionItems) = preProject
+		..\lib\Data Connection Dialog\README = ..\lib\Data Connection Dialog\README
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0F345BC7-B2AD-4AAF-981A-67F3A3C58190}.Debug|x86.ActiveCfg = Debug|x86
+		{0F345BC7-B2AD-4AAF-981A-67F3A3C58190}.Debug|x86.Build.0 = Debug|x86
+		{0F345BC7-B2AD-4AAF-981A-67F3A3C58190}.Release|x86.ActiveCfg = Release|x86
+		{0F345BC7-B2AD-4AAF-981A-67F3A3C58190}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{43DCCC47-9874-4F11-A45B-52ADC8995413} = {F96292B8-6E78-4C52-92ED-DA0EB4A8FACF}
+		{8BFEF852-7BA9-4FBB-8249-0806E043F5C6} = {F96292B8-6E78-4C52-92ED-DA0EB4A8FACF}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Dictionary>
+  <Words>
+    <Recognized>
+      <Word>Shapefile</Word>
+      <Word>Shapefiles</Word>
+      <Word>Shp</Word>
+    </Recognized>
+  </Words>
+  <Acronyms>
+    <CasingExceptions>
+      <Acronym>SHP</Acronym>
+    </CasingExceptions>
+  </Acronyms>
+</Dictionary>
