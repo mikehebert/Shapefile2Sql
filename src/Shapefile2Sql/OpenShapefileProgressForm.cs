@@ -37,8 +37,28 @@
         /// </param>
         public void Progress(string key, int percent, string message)
         {
-            this.label1.Text = message;
-            this.progressBar1.Value = percent;
+            if (percent == 0 && this.progressBar1.Style != ProgressBarStyle.Marquee)
+            {
+                this.Invoke((MethodInvoker)(() => this.progressBar1.Style = ProgressBarStyle.Marquee));
+            }
+            else
+            {
+                this.Invoke((MethodInvoker)(() => this.progressBar1.Style = ProgressBarStyle.Continuous));
+            }
+
+            // The shapefile loader from DotSpatial reports "Ready." before it is done...
+            if (message.Equals("Ready."))
+            {
+                this.Invoke((MethodInvoker)(() => this.label1.Text = "Please wait..."));
+            }
+            else
+            {
+                this.Invoke((MethodInvoker)(() => 
+                    { 
+                        this.label1.Text = message;
+                        this.progressBar1.Value = percent;
+                    }));
+            }
         }
 
         #endregion
