@@ -1,5 +1,7 @@
 ﻿namespace Shapefile2Sql
 {
+    using System;
+
     public class AttributeMapping
     {
         #region Public Properties
@@ -9,6 +11,14 @@
         public string MappedColumnName { get; set; }
 
         public string ShapefileAttributeName { get; set; }
+
+        public Type DataType { get; set; }
+
+        public bool IsNullable { get; set; }
+
+        public bool IncludeInImport { get; set; }
+
+        public int MaxLength { get; set; }
 
         #endregion
 

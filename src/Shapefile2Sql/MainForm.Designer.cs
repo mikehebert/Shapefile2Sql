@@ -52,13 +52,18 @@
             this.label4 = new System.Windows.Forms.Label();
             this.importButton = new System.Windows.Forms.Button();
             this.shapefileLoaderWorker = new System.ComponentModel.BackgroundWorker();
+            this.shapeCountLabel = new System.Windows.Forms.Label();
+            this.optionsPanel = new System.Windows.Forms.Panel();
+            this.importProgressBar = new System.Windows.Forms.ProgressBar();
+            this.importWorker = new System.ComponentModel.BackgroundWorker();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.optionsPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // ConnectionStringButton
             // 
-            this.ConnectionStringButton.Location = new System.Drawing.Point(513, 12);
+            this.ConnectionStringButton.Location = new System.Drawing.Point(504, 3);
             this.ConnectionStringButton.Name = "ConnectionStringButton";
             this.ConnectionStringButton.Size = new System.Drawing.Size(25, 23);
             this.ConnectionStringButton.TabIndex = 0;
@@ -69,7 +74,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(279, 15);
+            this.label1.Location = new System.Drawing.Point(270, 6);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(56, 13);
             this.label1.TabIndex = 1;
@@ -77,7 +82,7 @@
             // 
             // connectionStringTextBox
             // 
-            this.connectionStringTextBox.Location = new System.Drawing.Point(341, 12);
+            this.connectionStringTextBox.Location = new System.Drawing.Point(332, 3);
             this.connectionStringTextBox.Name = "connectionStringTextBox";
             this.connectionStringTextBox.ReadOnly = true;
             this.connectionStringTextBox.Size = new System.Drawing.Size(166, 20);
@@ -90,7 +95,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 15);
+            this.label2.Location = new System.Drawing.Point(4, 6);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(54, 13);
             this.label2.TabIndex = 12;
@@ -98,7 +103,7 @@
             // 
             // OpenShapefileButton
             // 
-            this.OpenShapefileButton.Location = new System.Drawing.Point(245, 12);
+            this.OpenShapefileButton.Location = new System.Drawing.Point(236, 3);
             this.OpenShapefileButton.Name = "OpenShapefileButton";
             this.OpenShapefileButton.Size = new System.Drawing.Size(25, 23);
             this.OpenShapefileButton.TabIndex = 11;
@@ -108,7 +113,7 @@
             // 
             // FileNameTextBox
             // 
-            this.FileNameTextBox.Location = new System.Drawing.Point(73, 12);
+            this.FileNameTextBox.Location = new System.Drawing.Point(64, 3);
             this.FileNameTextBox.Name = "FileNameTextBox";
             this.FileNameTextBox.ReadOnly = true;
             this.FileNameTextBox.Size = new System.Drawing.Size(166, 20);
@@ -117,7 +122,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(13, 44);
+            this.label3.Location = new System.Drawing.Point(4, 35);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(136, 13);
             this.label3.TabIndex = 14;
@@ -129,7 +134,7 @@
             this.panel1.BackColor = System.Drawing.SystemColors.Window;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.attributeMappingPanel);
-            this.panel1.Location = new System.Drawing.Point(14, 60);
+            this.panel1.Location = new System.Drawing.Point(5, 51);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(256, 177);
             this.panel1.TabIndex = 17;
@@ -162,7 +167,7 @@
             this.groupBox1.Controls.Add(this.shapeDataColumnNameTextBox);
             this.groupBox1.Controls.Add(this.tableNameTextBox);
             this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Location = new System.Drawing.Point(276, 44);
+            this.groupBox1.Location = new System.Drawing.Point(267, 35);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(262, 193);
             this.groupBox1.TabIndex = 18;
@@ -273,7 +278,7 @@
             // importButton
             // 
             this.importButton.Enabled = false;
-            this.importButton.Location = new System.Drawing.Point(463, 243);
+            this.importButton.Location = new System.Drawing.Point(454, 234);
             this.importButton.Name = "importButton";
             this.importButton.Size = new System.Drawing.Size(75, 23);
             this.importButton.TabIndex = 19;
@@ -286,27 +291,62 @@
             this.shapefileLoaderWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.ShapefileLoaderWorker_OnDoWork);
             this.shapefileLoaderWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.ShapefileLoaderWorker_OnRunWorkerCompleted);
             // 
+            // shapeCountLabel
+            // 
+            this.shapeCountLabel.AutoSize = true;
+            this.shapeCountLabel.Location = new System.Drawing.Point(12, 239);
+            this.shapeCountLabel.Name = "shapeCountLabel";
+            this.shapeCountLabel.Size = new System.Drawing.Size(68, 13);
+            this.shapeCountLabel.TabIndex = 20;
+            this.shapeCountLabel.Text = "Shape count";
+            this.shapeCountLabel.Visible = false;
+            // 
+            // optionsPanel
+            // 
+            this.optionsPanel.Controls.Add(this.FileNameTextBox);
+            this.optionsPanel.Controls.Add(this.ConnectionStringButton);
+            this.optionsPanel.Controls.Add(this.label1);
+            this.optionsPanel.Controls.Add(this.groupBox1);
+            this.optionsPanel.Controls.Add(this.connectionStringTextBox);
+            this.optionsPanel.Controls.Add(this.panel1);
+            this.optionsPanel.Controls.Add(this.OpenShapefileButton);
+            this.optionsPanel.Controls.Add(this.label3);
+            this.optionsPanel.Controls.Add(this.label2);
+            this.optionsPanel.Location = new System.Drawing.Point(0, 0);
+            this.optionsPanel.Name = "optionsPanel";
+            this.optionsPanel.Size = new System.Drawing.Size(538, 230);
+            this.optionsPanel.TabIndex = 21;
+            // 
+            // importProgressBar
+            // 
+            this.importProgressBar.Location = new System.Drawing.Point(5, 263);
+            this.importProgressBar.Name = "importProgressBar";
+            this.importProgressBar.Size = new System.Drawing.Size(524, 23);
+            this.importProgressBar.TabIndex = 22;
+            // 
+            // importWorker
+            // 
+            this.importWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.ImportWorker_OnDoWork);
+            this.importWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.ImportWorker_OnRunWorkerCompleted);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(553, 280);
+            this.ClientSize = new System.Drawing.Size(542, 295);
+            this.Controls.Add(this.importProgressBar);
+            this.Controls.Add(this.optionsPanel);
+            this.Controls.Add(this.shapeCountLabel);
             this.Controls.Add(this.importButton);
-            this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.panel1);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.OpenShapefileButton);
-            this.Controls.Add(this.FileNameTextBox);
-            this.Controls.Add(this.connectionStringTextBox);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.ConnectionStringButton);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "MainForm";
             this.Text = "Shapefile to SQL Import Tool";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.optionsPanel.ResumeLayout(false);
+            this.optionsPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -338,6 +378,10 @@
         private System.Windows.Forms.TextBox sridTextBox;
         private System.Windows.Forms.Button importButton;
         private System.ComponentModel.BackgroundWorker shapefileLoaderWorker;
+        private System.Windows.Forms.Label shapeCountLabel;
+        private System.Windows.Forms.Panel optionsPanel;
+        private System.Windows.Forms.ProgressBar importProgressBar;
+        private System.ComponentModel.BackgroundWorker importWorker;
     }
 }
 
