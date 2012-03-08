@@ -10,6 +10,7 @@
     using System.Threading.Tasks;
 
     using DotSpatial.Data;
+    using DotSpatial.Projections;
 
     using Microsoft.SqlServer.Management.Common;
     using Microsoft.SqlServer.Management.Smo;
@@ -158,6 +159,15 @@
                 var command = new SqlCommand(insertStatement, conn);
 
                 Shape shape = this.shapefile.GetShape(index, true);
+
+                ProjectionInfo sourceProjection = this.shapefile.Projection;
+                ProjectionInfo destProjection = KnownCoordinateSystems.Geographic.World.WGS1984;
+
+                if (!sourceProjection.ToString().Equals(destProjection.ToString()))
+                {
+                    shape.Z = new double[shape.Vertices.Length];
+                    Reproject.ReprojectPoints(shape.Vertices, shape.Z, sourceProjection, destProjection, 0, shape.Vertices.Length / 2);
+                }
 
                 if (this.SpatialDataType == SpatialDataType.Geography && this.shapefile is PolygonShapefile)
                 {
