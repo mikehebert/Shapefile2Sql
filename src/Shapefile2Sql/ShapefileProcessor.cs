@@ -160,21 +160,25 @@
 
                 Shape shape = this.shapefile.GetShape(index, true);
 
-                ProjectionInfo sourceProjection = this.shapefile.Projection;
-                ProjectionInfo destProjection = KnownCoordinateSystems.Geographic.World.WGS1984;
-
-                if (!sourceProjection.ToString().Equals(destProjection.ToString()))
+                if (this.SpatialDataType == SpatialDataType.Geography)
                 {
-                    shape.Z = new double[shape.Vertices.Length];
-                    Reproject.ReprojectPoints(shape.Vertices, shape.Z, sourceProjection, destProjection, 0, shape.Vertices.Length / 2);
-                }
+                    // Automatically reproject to WGS84 if Geography was selected
+                    ProjectionInfo sourceProjection = this.shapefile.Projection;
+                    ProjectionInfo destProjection = KnownCoordinateSystems.Geographic.World.WGS1984;
 
-                if (this.SpatialDataType == SpatialDataType.Geography && this.shapefile is PolygonShapefile)
-                {
-                    // Test for clockwise-ness (for the SQL geography type, shapes must be in a counter-clockwise orientation)
-                    if (this.IsPolygonClockwise(shape))
+                    if (!sourceProjection.ToString().Equals(destProjection.ToString()))
                     {
-                        shape.Vertices = this.ReversePolygonVertexOrientation(shape);
+                        shape.Z = new double[shape.Vertices.Length];
+                        Reproject.ReprojectPoints(shape.Vertices, shape.Z, sourceProjection, destProjection, 0, shape.Vertices.Length / 2);
+                    }
+
+                    if (this.shapefile is PolygonShapefile)
+                    {
+                        // Test for clockwise-ness (for the SQL geography type, shapes must be in a counter-clockwise orientation)
+                        if (this.IsPolygonClockwise(shape))
+                        {
+                            shape.Vertices = this.ReversePolygonVertexOrientation(shape);
+                        }
                     }
                 }
 
@@ -332,10 +336,17 @@
             if (this.Mapping.Count == 0)
             {
                 return string.Format(
-                    @"INSERT INTO [{0}]({1}) VALUES({2});",
+                    @"BEGIN TRY
+    INSERT INTO [{0}]({1}) VALUES({2});
+END TRY
+BEGIN CATCH
+    -- Retry by converting from a geometry instance
+    INSERT INTO [{0}]({1}) VALUES({3});
+END CATCH",
                     this.TableName,
                     string.Format("[{0}]", this.ShapeDataColumnName),
-                    this.GenerateInsertGeographyClause());
+                    this.GenerateInsertGeographyClause(),
+                    this.GenerateInsertGeographyFromGeometryClause());
             }
             
             string setClause = string.Format("[{0}]", this.ShapeDataColumnName) + ","
@@ -351,11 +362,24 @@
                                       this.Mapping.Where(a => a.IncludeInImport).OrderBy(a => a.ColumnIndex).Select(
                                           s => string.Format("@{0}", s.MappedColumnName)));
 
+            string alternateValuesClause = this.GenerateInsertGeographyFromGeometryClause() + ","
+                                  +
+                                  string.Join(
+                                      ",",
+                                      this.Mapping.Where(a => a.IncludeInImport).OrderBy(a => a.ColumnIndex).Select(
+                                          s => string.Format("@{0}", s.MappedColumnName)));
             return string.Format(
-                @"INSERT INTO [{0}]({1}) VALUES({2});",
+                @"BEGIN TRY
+INSERT INTO [{0}]({1}) VALUES({2});
+END TRY
+BEGIN CATCH 
+    -- Retry by converting from a geometry instance
+    INSERT INTO [{0}]({1}) VALUES({3});
+END CATCH",
                 this.TableName,
                 setClause,
-                valuesClause);
+                valuesClause,
+                alternateValuesClause);
         }
 
         private string GenerateInsertGeographyClause()
@@ -363,6 +387,14 @@
             return string.Format(
                 "{0}::STGeomFromText(@{1}, {2})",
                 this.SpatialDataType == SpatialDataType.Geography ? "geography" : "geometry",
+                this.ShapeDataColumnName,
+                this.Srid);
+        }
+
+        private string GenerateInsertGeographyFromGeometryClause()
+        {
+            return string.Format(
+                "geography::STGeomFromWKB(geometry::STGeomFromText(@{0}, {1}).MakeValid().Reduce(0.0000001).STUnion(geometry::STGeomFromText(@{0}, {1}).MakeValid().Reduce(0.0000001).STStartPoint()).STAsBinary(),{1})",
                 this.ShapeDataColumnName,
                 this.Srid);
         }
