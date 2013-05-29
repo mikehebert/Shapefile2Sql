@@ -257,5 +257,15 @@
         {
             this.importButton.Enabled = this.processor.CanImport();
         }
+
+        private void CreateIndexCheckBox_OnCheckedChanged(object sender, EventArgs e)
+        {
+            this.processor.CreateSpatialIndex = this.createIndexCheckBox.Checked;
+        }
+
+        private void ParallelCheckBox_OnCheckedChanged(object sender, EventArgs e)
+        {
+            this.processor.ParallelImport = this.parallelCheckBox.Checked;
+        }
     }
 }

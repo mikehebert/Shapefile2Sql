@@ -183,6 +183,7 @@
             this.parallelCheckBox.TabIndex = 10;
             this.parallelCheckBox.Text = "Parallel Import";
             this.parallelCheckBox.UseVisualStyleBackColor = true;
+            this.parallelCheckBox.CheckedChanged += new System.EventHandler(this.ParallelCheckBox_OnCheckedChanged);
             // 
             // geometryOption
             // 
@@ -240,6 +241,7 @@
             this.createIndexCheckBox.TabIndex = 4;
             this.createIndexCheckBox.Text = "Create Spatial Index";
             this.createIndexCheckBox.UseVisualStyleBackColor = true;
+            this.createIndexCheckBox.CheckedChanged += new System.EventHandler(this.CreateIndexCheckBox_OnCheckedChanged);
             // 
             // label5
             // 
